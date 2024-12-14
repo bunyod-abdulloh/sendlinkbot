@@ -21,8 +21,8 @@ async def welcome_message(message: types.Message):
     builder.adjust(1)
 
     await message.answer(
-        text="🚀 Loyihada ishtirok etish uchun quyidagi kanallarga a'zo boʼling.\n\n"
-             "Keyin \"✅ А'zo bo'ldim!\" tugmasini bosing", reply_markup=builder.as_markup())
+        text="🎉 Tabriklaymiz 🎉 Siz birinchi qadamni bosdingiz! Davom etish uchun yagona bo'lgan kanalimizga a'zo "
+             "bo'ling.\n\nKeyin \"✅ А'zo bo'ldim!\" tugmasini bosing", reply_markup=builder.as_markup())
 
 
 @router.message(CommandStart())
@@ -39,8 +39,8 @@ async def do_start(message: types.Message, command: CommandObject):
             ]])
             await bot.send_message(
                 chat_id=inviter,
-                text=f"Siz yuborgan havolalar orqali botga ro'yxatdan o'tgan foydalanuvchilar soni {count_inviter} taga"
-                     f" yetdi.\n\nQuyidagi tugmani bosib yopiq kanalga qo'shilib olishingiz mumkin",
+                text=f"Tabriklaymiz Siz ushbu sovg'ani olishga haqli deb topildingiz\n\n"
+                     f"Quyidagi tugma orqali yopiq kanalga qo'shilib olishingiz mumkin",
                 reply_markup=markup, protect_content=True
             )
             await welcome_message(message=message)
