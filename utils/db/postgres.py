@@ -56,6 +56,10 @@ class Database:
         sql = "DELETE FROM link_table WHERE created_at != CURRENT_DATE"
         return await self.execute(sql, execute=True)
 
+    async def delete_inviter(self, inviter):
+        sql = "DELETE FROM link_table WHERE inviter = $1"
+        return await self.execute(sql, inviter, execute=True)
+
     async def drop_table_links(self):
         sql = "DROP TABLE link_table"
         return await self.execute(sql, execute=True)
