@@ -13,11 +13,10 @@ router = Router()
 async def welcome_message(message: types.Message):
     builder = InlineKeyboardBuilder()
 
-    for channel_id in CHANNELS:
-        get_fullname = (await bot.get_chat(chat_id=channel_id)).full_name
-        get_username = (await bot.get_chat(chat_id=channel_id)).username
-        builder.add(types.InlineKeyboardButton(text=f"{get_fullname}",
-                                               url=f"https://t.me/{get_username}"))
+    get_fullname = (await bot.get_chat(chat_id=CHANNELS)).full_name
+    get_username = (await bot.get_chat(chat_id=CHANNELS)).username
+    builder.add(types.InlineKeyboardButton(text=f"{get_fullname}",
+                                           url=f"https://t.me/{get_username}"))
     builder.add(types.InlineKeyboardButton(text="✅ A'zo bo'ldim!", callback_data="subscribed"))
     builder.adjust(1)
 
