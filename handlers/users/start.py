@@ -21,7 +21,7 @@ async def welcome_message(message: types.Message):
     builder.adjust(1)
 
     await message.answer(
-        text="🎉 Tabriklaymiz 🎉 Siz birinchi qadamni bosdingiz! Davom etish uchun yagona bo'lgan kanalimizga a'zo "
+        text="🎉 Tabriklaymiz 🎉\n\nSiz birinchi qadamni bosdingiz! Davom etish uchun yagona bo'lgan kanalimizga a'zo "
              "bo'ling.\n\nKeyin \"✅ А'zo bo'ldim!\" tugmasini bosing", reply_markup=builder.as_markup())
 
 

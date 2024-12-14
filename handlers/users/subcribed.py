@@ -10,7 +10,9 @@ router = Router()
 @router.callback_query(F.data == "subscribed")
 async def subscribe_callback(call: types.CallbackQuery):
     user_status = (await bot.get_chat_member(chat_id=CHANNELS, user_id=call.from_user.id)).status
-
+    await bot.send_message(
+        chat_id=call.from_user.id, text=user_status
+    )
     if user_status == 'left' or 'kicked':
         bot_fullname = (await bot.get_chat(chat_id=CHANNELS)).full_name
         await call.answer(
