@@ -51,10 +51,11 @@ async def do_start(message: types.Message, command: CommandObject):
                     inviter=inviter, new_member=new_member, invite_count=1
                 )
                 count_inviter = await db.count_members(inviter=inviter)
+                friend_fullname = (await bot.get_chat(chat_id=inviter)).full_name
                 await bot.send_message(
-                    chat_id=inviter, text=f"🎉 Tabriklaymiz, {message.from_user.full_name} do’stingiz Sizning unikal "
-                                          f"taklif havolangiz orqali botimizga qo’shildi.\n\n🎁Aytilgan Bonus "
-                                          f"sovg'alarni olishingiz uchun yana {5 - count_inviter} ta do’stingizni "
+                    chat_id=inviter, text=f"🎉 Tabriklaymiz, {message.from_user.full_name} do’stingiz {friend_fullname}"
+                                          f" Sizning unikal taklif havolangiz orqali botimizga qo’shildi.\n\n🎁Aytilgan "
+                                          f"Bonus sovg'alarni olishingiz uchun yana {5 - count_inviter} ta do’stingizni "
                                           f"taklif qilishingiz lozim.\n\nBonuslar sizni kutmoqda...."
                 )
                 await welcome_message(message=message)

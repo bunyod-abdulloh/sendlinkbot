@@ -9,7 +9,8 @@ router = Router()
 
 async def subscribe_message(call: types.CallbackQuery):
     link = await create_start_link(bot=bot, payload=str(call.from_user.id))
-    send_link_ = f"\n\nQuyidagi havola orqali botga a'zo bo'ling:\n\n{link}"
+    send_link_ = (f"📚 Qiymati 2000$ bo'lgan Milliy Sertifikat kitobini olish uchun quyidagi havola orqali botga a'zo "
+                  f"bo'ling:\n\n{link}")
     markup = types.InlineKeyboardMarkup(inline_keyboard=[[
         types.InlineKeyboardButton(text="Yuborish", switch_inline_query=send_link_)
 
