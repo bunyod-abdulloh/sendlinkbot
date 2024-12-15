@@ -73,7 +73,7 @@ async def do_start(message: types.Message, command: CommandObject):
                              f"Bonus sovg'alarni olishingiz uchun yana {5 - count_inviter} ta do’stingizni "
                              f"taklif qilishingiz lozim.\n\nBonuslar sizni kutmoqda...."
                     )
-                    await welcome_message(message=message)
+                await welcome_message(message=message)
             except asyncpg.exceptions.UniqueViolationError:
                 try:
                     await message.answer(
