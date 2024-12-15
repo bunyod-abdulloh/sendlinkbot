@@ -14,8 +14,7 @@ class Database:
             user=config.DB_USER,
             password=config.DB_PASS,
             host=config.DB_HOST,
-            database=config.DB_NAME,
-            max_size=20
+            database=config.DB_NAME
         )
 
     async def execute(self, command, *args, fetch=False, fetchval=False, fetchrow=False, execute=False):
@@ -39,7 +38,7 @@ class Database:
             inviter BIGINT NOT NULL,
             new_member BIGINT NOT NULL UNIQUE,
             invite_count INTEGER DEFAULT 0,
-            created_at DATE DEFAULT CURRENT_DATE
+            created_at DATE DEFAULT CURRENT_DATE            
         );
         """
         await self.execute(sql, execute=True)
@@ -70,28 +69,33 @@ class Database:
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             telegram_id BIGINT NOT NULL UNIQUE,
-            status BOOLEAN DEFAULT TRUE            
+            join_channel BOOLEAN NULL,
+            status BOOLEAN NULL            
         );
         """
         await self.execute(sql, execute=True)
 
-    async def add_user(self, telegram_id):
-        sql = "INSERT INTO users (telegram_id) VALUES ($1) returning id"
-        return await self.execute(sql, telegram_id, fetchrow=True)
+    async def add_user(self, telegram_id, join_channel):
+        sql = "INSERT INTO users (telegram_id, join_channel) VALUES ($1, $2) returning id"
+        return await self.execute(sql, telegram_id, join_channel, fetchrow=True)
 
-    async def update_status_false(self, telegram_id):
-        sql = "UPDATE users SET status = FALSE WHERE telegram_id = $1"
-        return await self.execute(sql, telegram_id, execute=True)
+    async def select_user(self, telegram_id):
+        sql = "SELECT join_channel FROM users WHERE telegram_id = $1"
+        return await self.execute(sql, telegram_id, fetchval=True)
 
     async def select_all_users(self):
-        sql = "SELECT telegram_id FROM users"
+        sql = "SELECT telegram_id FROM users "
         return await self.execute(sql, fetch=True)
 
     async def count_users(self):
         sql = "SELECT COUNT(*) FROM users"
         return await self.execute(sql, fetchval=True)
 
-    async def delete_blockers(self):
+    async def update_status_false(self, telegram_id):
+        sql = """ UPDATE users SET status = FALSE WHERE telegram_id = $1 """
+        return await self.execute(sql, telegram_id, execute=True)
+
+    async def delete_blocked_users(self):
         sql = "DELETE FROM users WHERE status = FALSE"
         return await self.execute(sql, execute=True)
 

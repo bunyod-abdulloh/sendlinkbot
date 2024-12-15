@@ -61,7 +61,7 @@ async def delete_except_today(message: types.Message):
 
 @router.message(IsBotAdminFilter(ADMINS), F.text == "Delete blockers")
 async def delete_blockers_from_db(message: types.Message):
-    await db.delete_blockers()
+    await db.delete_blocked_users()
     users_count = await db.count_users()
     await message.answer(f"Botni block qilgan foydalanuvchilar ma'lumotlari o'chirildi!\n\n"
                          f"Bazada {users_count} ta foydalanuvchi bor")
@@ -78,7 +78,7 @@ async def send_ad_to_users(message: types.Message, state: FSMContext):
     users = await db.select_all_users()
     count = 0
     for user in users:
-        user_id = user[-1]
+        user_id = user['telegram_id']
         try:
             await message.send_copy(chat_id=user_id)
             count += 1
