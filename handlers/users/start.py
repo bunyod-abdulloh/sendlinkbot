@@ -34,9 +34,6 @@ async def do_start(message: types.Message, command: CommandObject):
         count_inviter = await db.count_members(inviter=inviter)
 
         if count_inviter == 4:
-            # get_inviter_count = await db.select_user(telegram_id=inviter)
-            #
-            # if get_inviter_count is None:
             await db.add_user(telegram_id=inviter, join_channel=True)
             # expire_time = datetime.now() + timedelta(minutes=10)
             invite_link = (await bot.create_chat_invite_link(chat_id=PRIVATE_CHANNEL, member_limit=1)).invite_link
@@ -52,6 +49,8 @@ async def do_start(message: types.Message, command: CommandObject):
             )
             await welcome_message(message=message)
             await db.delete_inviter(inviter=inviter)
+        elif count_inviter > 4:
+            await welcome_message(message=message)
         else:
             try:
                 new_member = message.from_user.id
