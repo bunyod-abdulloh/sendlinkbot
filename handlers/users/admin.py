@@ -27,14 +27,6 @@ async def admin_main(message: types.Message):
         ],
             [
                 types.KeyboardButton(
-                    text="Delete (except today)"
-                ),
-                types.KeyboardButton(
-                    text="Delete blockers"
-                )
-            ],
-            [
-                types.KeyboardButton(
                     text="Bosh sahifa"
                 )
             ]
@@ -46,6 +38,15 @@ async def admin_main(message: types.Message):
         text="Admin sahifasi", reply_markup=button
     )
 
+
+# [
+#     types.KeyboardButton(
+#         text="Delete (except today)"
+#     ),
+#     types.KeyboardButton(
+#         text="Delete blockers"
+#     )
+# ],
 
 @router.message(IsBotAdminFilter(ADMINS), F.text == "Foydalanuvchilar soni")
 async def get_users_count(message: types.Message):
