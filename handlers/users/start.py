@@ -33,23 +33,23 @@ async def do_start(message: types.Message, command: CommandObject):
         inviter = int(command.args)
         count_inviter = await db.count_members(inviter=inviter)
 
-        if count_inviter == 4:
-            get_inviter_count = await db.select_user(telegram_id=inviter)
+        if count_inviter == 0:
+            # get_inviter_count = await db.select_user(telegram_id=inviter)
+            #
+            # if get_inviter_count is None:
+            await db.add_user(telegram_id=inviter, join_channel=True)
+            # expire_time = datetime.now() + timedelta(minutes=10)
+            invite_link = (await bot.create_chat_invite_link(chat_id=PRIVATE_CHANNEL, member_limit=1)).invite_link
+            markup = types.InlineKeyboardMarkup(inline_keyboard=[[
+                types.InlineKeyboardButton(text="Kanalga qo'shilish", url=invite_link)
+            ]])
 
-            if get_inviter_count is None:
-                await db.add_user(telegram_id=inviter, join_channel=True)
-                # expire_time = datetime.now() + timedelta(minutes=10)
-                invite_link = (await bot.create_chat_invite_link(chat_id=PRIVATE_CHANNEL, member_limit=1)).invite_link
-                markup = types.InlineKeyboardMarkup(inline_keyboard=[[
-                    types.InlineKeyboardButton(text="Kanalga qo'shilish", url=invite_link)
-                ]])
-
-                await bot.send_message(
-                    chat_id=inviter,
-                    text=f"Tabriklaymiz Siz ushbu sovg'ani olishga haqli deb topildingiz\n\n"
-                         f"Quyidagi tugma orqali yopiq kanalga qo'shilib olishingiz mumkin",
-                    reply_markup=markup, protect_content=True
-                )
+            await bot.send_message(
+                chat_id=inviter,
+                text=f"Tabriklaymiz Siz ushbu sovg'ani olishga haqli deb topildingiz\n\n"
+                     f"Quyidagi tugma orqali yopiq kanalga qo'shilib olishingiz mumkin",
+                reply_markup=markup, protect_content=True
+            )
             await welcome_message(message=message)
             await db.delete_inviter(inviter=inviter)
         else:
@@ -71,7 +71,7 @@ async def do_start(message: types.Message, command: CommandObject):
                         text=f"🎉 Tabriklaymiz, {friend_fullname} do’stingiz {message.from_user.full_name}"
                              f" Sizning unikal taklif havolangiz orqali botimizga qo’shildi.\n\n🎁Aytilgan "
                              f"Bonus sovg'alarni olishingiz uchun yana {5 - count_inviter} ta do’stingizni "
-                             f"taklif qilishingiz lozim.\n\nBonuslar sizni kutmoqda...."
+                             f"taklif qilishingiz lozim.\n\nBonuslar Sizni kutmoqda...."
                     )
                 await welcome_message(message=message)
             except asyncpg.exceptions.UniqueViolationError:
