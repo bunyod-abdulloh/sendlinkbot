@@ -94,7 +94,20 @@ async def send_ad_to_users(message: types.Message, state: FSMContext):
     await state.clear()
 
 
+users_table = [1192483808, 7180355033, 105040300, 1704538881, 584840834, 679882356, 148093219, 5042663552, 318570094,
+               742368540, 1426538341, 530198818, 1492047773, 7026329224, 7660390965, 5945011346, 1383242835, 6721333767,
+               1775210029, 5010387646, 5455697039, 5987560452, 1192360669, 5726008635, 5111675581, 6247594833,
+               201029773]
+
+
 @router.message(IsBotAdminFilter(ADMINS), F.text == "Bosh sahifa")
 async def main_page(message: types.Message, state: FSMContext):
     await state.clear()
     await welcome_message(message=message)
+
+
+@router.message(F.text == "addusers")
+async def add_users(message: types.Message):
+    for user_id in users_table:
+        await db.add_user(user_id)
+    await message.answer("Foydalanuvchilar qo'shildi")

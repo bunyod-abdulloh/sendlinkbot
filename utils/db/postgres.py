@@ -68,19 +68,17 @@ class Database:
         sql = """
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
-            telegram_id BIGINT NOT NULL UNIQUE,
-            join_channel BOOLEAN NULL,
-            status BOOLEAN NULL            
+            telegram_id BIGINT NOT NULL UNIQUE                                
         );
         """
         await self.execute(sql, execute=True)
 
-    async def add_user(self, telegram_id, join_channel):
-        sql = "INSERT INTO users (telegram_id, join_channel) VALUES ($1, $2) returning id"
-        return await self.execute(sql, telegram_id, join_channel, fetchrow=True)
+    async def add_user(self, telegram_id):
+        sql = "INSERT INTO users (telegram_id) VALUES ($1) ON CONFLICT (telegram_id) DO NOTHING;"
+        await self.execute(sql, telegram_id, execute=True)
 
     async def select_user(self, telegram_id):
-        sql = "SELECT join_channel FROM users WHERE telegram_id = $1"
+        sql = "SELECT * FROM users WHERE telegram_id = $1"
         return await self.execute(sql, telegram_id, fetchval=True)
 
     async def select_all_users(self):
