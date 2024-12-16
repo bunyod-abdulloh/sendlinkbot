@@ -33,7 +33,7 @@ async def do_start(message: types.Message, command: CommandObject):
         inviter = int(command.args)
         count_inviter = await db.count_members(inviter=inviter)
 
-        if count_inviter == 0:
+        if count_inviter == 4:
             # get_inviter_count = await db.select_user(telegram_id=inviter)
             #
             # if get_inviter_count is None:
