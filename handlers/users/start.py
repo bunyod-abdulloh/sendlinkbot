@@ -60,11 +60,14 @@ async def do_start(message: types.Message, command: CommandObject):
                 reply_markup=markup, protect_content=True
             )
             await welcome_message(message=message)
-            await db.add_user(telegram_id=inviter)
-            await db.add_user(telegram_id=message.from_user.id)
-            await db.add_members(
-                inviter=inviter, new_member=new_member, invite_count=1
-            )
+            try:
+                await db.add_user(telegram_id=inviter)
+                await db.add_user(telegram_id=message.from_user.id)
+                await db.add_members(
+                    inviter=inviter, new_member=new_member, invite_count=1
+                )
+            except asyncpg.exceptions.UniqueViolationError:
+                pass
 
         elif count_inviter > 4:
             await welcome_message(message=message)
